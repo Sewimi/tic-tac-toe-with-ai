@@ -6,7 +6,9 @@ class HumanPlayer:
 
 
     def make_move(self,board) -> tuple:
-        pass
+       col=input(f"enter the col you want to place \"{side}\":")
+       row=input(f"enter the col you want to place \"{side}\":")
+       return (col,row)
 
 
 
