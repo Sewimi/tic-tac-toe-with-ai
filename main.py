@@ -66,7 +66,7 @@ class Game:
     def make_move(self,player):
 
 
-        col,row=player.make_move()
+        col,row=player.make_move(self.board)
         ind =   3*row + col
 
         
@@ -112,9 +112,3 @@ game=Game(p1,p2)
 
 game.game_loop()
 
-
-
-
-
-
-  
