@@ -27,35 +27,27 @@ class Game:
             if val == ".": self.valid_moves.append(i)
 
 
-    def check_win(self,side) -> bool:
-        f=True
-        for i in range(3):
-            ch= self.board[3*i]
+    def check_win(self,col,row,side,board):
+       
+        
+       
+        if all(side == board[i*3 + col] for i in range(3)): 
+            return (True,side)
+        elif all(side == board[row*3 + i] for i in range(3)): 
+            return (True,side)           
 
-            if ch == self.board[3*i +1] == self.board[3*i +2] and ch!=".":
-                print(f"The winner is {ch}")
-                self.print_board()
-                return True
-            ch= self.board[i]
-            if ch== self.board[i + 3] == self.board[i+6] and ch!=".":
-                if self.board[0] != ".":
-                    print(f"The winner is {ch}")
-                    self.print_board()
-                    return True
+        if (row*3 + col) % 2 == 0:
+            diag1 = [board[i] for i in [0,4,8]]
+            if all(side == i for i in diag1):
+                return (True,side)
 
-            if all(self.board[0] == self.board[3*x + x] for x in range(3)):
-                if self.board[0] != ".":
-                    print(f"The winner is {self.board[0]}")
-                    self.print_board()
-                    return True
-            
-            if all(self.board[2] == self.board[3*x - x] for x in range(3)):
-                if self.board[2] != ".":
-                    print(f"The winner is {ch}")
-                    self.print_board()
-                    return True
+            diag2 = [board[i] for i in [2,4,6]]
+            if all(side == i for i in diag2):
+                return (True,side)
 
-        return not ('.' in self.board)
+
+
+        return (not ('.' in self.board),side)
 
                 
                 
@@ -77,15 +69,18 @@ class Game:
         col,row=player.make_move()
         ind =   3*row + col
 
+        
         self.update_valid_moves(self.board)
 
-        print(self.valid_moves)
         if ind in self.valid_moves:
             
             self.board[ind] = player.side
 
 
-            self.check_win(ind,player.side)
+            win=self.check_win(col,row,player.side,self.board)
+            if win[0] == True:
+                self.winner=win[1]
+                self.end=True
 
             self.change_turn()
         else:
@@ -98,7 +93,7 @@ class Game:
         while True:
 
             if self.end:
-                print(f"The winner is{self.winner}! Congrats!")
+                print(f"The winner is {self.winner}! Congrats!")
                 break
          
             self.print_board()
