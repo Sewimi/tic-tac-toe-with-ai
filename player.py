@@ -5,9 +5,9 @@ class HumanPlayer:
         self.side=side
 
 
-    def make_move(self,board) -> tuple:
-       col=input(f"enter the col you want to place \"{side}\":")
-       row=input(f"enter the col you want to place \"{side}\":")
+    def make_move(self) -> tuple:
+       col=int(input(f"enter the col you want to place \"{self.side}\": "))
+       row=int(input(f"enter the row you want to place \"{self.side}\": "))
        return (col,row)
 
 
