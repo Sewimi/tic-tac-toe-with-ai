@@ -1,4 +1,6 @@
+
 import player
+
 
 class Game:
 
@@ -21,13 +23,16 @@ class Game:
                 print("|--------|")
 
 
+
     def update_valid_moves(self,board):
-        self.valid_moves=[]
+        valid_moves=[]
         for i,val in enumerate(board):
-            if val == ".": self.valid_moves.append(i)
+            if val == ".": 
+                valid_moves.append(i)
+        return valid_moves
 
-
-    def check_win(self,col,row,side,board):
+    @staticmethod
+    def check_win(col,row,side,board):
        
         
        
@@ -47,7 +52,7 @@ class Game:
 
 
 
-        return (not ('.' in self.board),side)
+        return (not ('.' in board),side)
 
                 
                 
@@ -67,17 +72,21 @@ class Game:
 
 
         col,row=player.make_move(self.board)
-        ind =   3*row + col
+        ind =  3*row + col
+        if player == "x":
+            print("asdfasd",col,row)
 
         
-        self.update_valid_moves(self.board)
+        self.valid_moves=self.update_valid_moves(self.board)
 
         if ind in self.valid_moves:
             
             self.board[ind] = player.side
 
 
-            win=self.check_win(col,row,player.side,self.board)
+
+            win=Game.check_win(col,row,player.side,self.board)
+
             if win[0] == True:
                 self.winner=win[1]
                 self.end=True
@@ -92,23 +101,31 @@ class Game:
 
         while True:
 
-            if self.end:
+            if self.end == True:
                 print(f"The winner is {self.winner}! Congrats!")
+                self.print_board()
                 break
+         
          
             self.print_board()
 
-            if self.turn=='p1':
+            if self.turn == 'p1':
                 self.make_move(self.player1)
+                
             elif self.turn=='p2':
+                self.print_board()
                 self.make_move(self.player2)
 
 
 
-p1=player.HumanPlayer("o")
-p2=player.HumanPlayer("x")
+if __name__ == "__main__":
+  
+    p1=player.HumanPlayer("o")
+    p2=player.ComputerPlayer("x")
 
-game=Game(p1,p2)
+    p2.make_move([])
 
-game.game_loop()
+    game=Game(p1,p2)
+
+    game.game_loop()
 
