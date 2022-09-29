@@ -23,8 +23,8 @@ class Game:
                 print("|--------|")
 
 
-
-    def update_valid_moves(self,board):
+    @staticmethod
+    def give_valid_moves(board):
         valid_moves=[]
         for i,val in enumerate(board):
             if val == ".": 
@@ -73,11 +73,10 @@ class Game:
 
         col,row=player.make_move(self.board)
         ind =  3*row + col
-        if player == "x":
-            print("asdfasd",col,row)
+
 
         
-        self.valid_moves=self.update_valid_moves(self.board)
+        self.valid_moves=self.give_valid_moves(self.board)
 
         if ind in self.valid_moves:
             
@@ -123,9 +122,7 @@ if __name__ == "__main__":
     p1=player.HumanPlayer("o")
     p2=player.ComputerPlayer("x")
 
-    p2.make_move([])
 
     game=Game(p1,p2)
 
     game.game_loop()
-

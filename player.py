@@ -1,5 +1,3 @@
-import random
-
 class HumanPlayer:
 
 
@@ -18,7 +16,6 @@ class ComputerPlayer:
 
     def __init__(self,side) -> None:
         self.side=side
-        self.f1=True
         
 
 
@@ -33,13 +30,15 @@ class ComputerPlayer:
         
         
 
-        def minimax(board,depth,maximizingPlayer):
-            
-            x=Game.check_win(1,1,self.side,board)
-            if x[1]== True:
-                winner=x[0]
+        def minimax(board,depth,maximizingPlayer,mv_made):
+            col = mv_made%3
+            row = mv_made//3
+
+            x=Game.check_win(col,row,self.side,board)
+            if x[0]== True:
+                winner=x[1]
                 if winner == self.side:                    
-                    return 1
+                    return 1 #win1,draw0/lose-1
                 else:
                     return -1
                     
@@ -47,12 +46,39 @@ class ComputerPlayer:
                 return 0
             
             if maximizingPlayer:
-                pass
-            else:
-                pass
-        
-        # col,row=minimax(board,5,True)
+                moves=[-1]
+                for i in Game.give_valid_moves(board):
 
-        return (random.randint(0,2),random.randint(0,2))
-            
-     
+                    board[i] = self.side
+                    win=minimax(board,depth-1,False,i)
+                    moves.append(win)
+                    board[i] = "."
+                return max(moves)
+
+            else:
+
+                  moves=[1]
+                  for i in Game.give_valid_moves(board):
+
+                    board[i] = "o"
+                    win=minimax(board,depth-1,True,i)
+                    moves.append(win)
+                    board[i] = "."
+
+                  return min(moves)
+
+        mvs=[]
+        for i in Game.give_valid_moves(board):
+
+            board[i] = self.side
+            w=minimax(board,4,False,i)
+            mvs.append((i,w))
+            board[i] = "."
+
+
+        x= max(i[0] for i in mvs)
+        col = x%3
+        row = x//3
+        print(col,row)
+        return (col,row)
+        # return (random.randint(0,2),random.randint(0,2))
