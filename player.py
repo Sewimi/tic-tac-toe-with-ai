@@ -41,8 +41,16 @@ class ComputerPlayer:
                     return 1 #win1,draw0/lose-1
                 else:
                     return -1
+
+            x=Game.check_win(col,row,"o",board)
+            if x[0] == True:
+                winner=x[1]
+                if winner == self.side:                    
+                    return 1 #win1,draw0/lose-1
+                else:
+                    return -1
                     
-            if depth == 0:   
+            if depth == 0 or Game.give_valid_moves(board) == []:   
                 return 0
             
             if maximizingPlayer:
@@ -71,12 +79,19 @@ class ComputerPlayer:
         for i in Game.give_valid_moves(board):
 
             board[i] = self.side
-            w=minimax(board,4,False,i)
+            w=minimax(board,6,False,i)
             mvs.append((i,w))
             board[i] = "."
 
 
-        x= max(i[0] for i in mvs)
+        highest=-1
+        x=0
+        for i in mvs:
+            if i[1]>highest:
+                highest=i[1]
+                x=i[0]
+
+
         col = x%3
         row = x//3
         print(col,row)
